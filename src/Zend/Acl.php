@@ -593,6 +593,8 @@ class Zend_Acl
         }
         unset($rolesTemp);
 
+        $allResources = array(); // this might be used later if resource iteration is required
+
         // ensure that all specified Resources exist; normalize input to array of Resource objects or null
         if ($resources !== null) {
             if (!is_array($resources)) {
@@ -611,7 +613,6 @@ class Zend_Acl
             }
             unset($resourcesTemp, $resource);
         } else {
-            $allResources = array(); // this might be used later if resource iteration is required
             foreach ($this->_resources as $rTarget) {
                 $allResources[] = $rTarget['instance'];
             }
@@ -1067,6 +1068,8 @@ class Zend_Acl
         } else {
             $rule = $rules['byPrivilegeId'][$privilege];
         }
+
+        $assertionValue = null;
 
         // check assertion first
         if ($rule['assert']) {

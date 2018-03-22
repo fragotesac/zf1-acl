@@ -20,9 +20,6 @@
  * @version    $Id$
  */
 
-require_once 'Zend/Acl.php';
-require_once 'Zend/Acl/Resource.php';
-require_once 'Zend/Acl/Role.php';
 require_once dirname(__FILE__) . '/_files/MockAssertion.php';
 
 /**
@@ -99,12 +96,9 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
      */
     public function testRoleRegistryRemoveOneNonExistent()
     {
-        try {
-            $this->_acl->removeRole('nonexistent');
-            $this->fail('Expected Zend_Acl_Role_Registry_Exception not thrown upon removing a non-existent Role');
-        } catch (Zend_Acl_Role_Registry_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
-        }
+        $this->expectException(\Zend_Acl_Role_Registry_Exception::class);
+        $this->expectExceptionMessage('Role \'nonexistent\' not found');
+        $this->_acl->removeRole('nonexistent');
     }
 
     /**
@@ -1229,6 +1223,8 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
         $acl->addResource('blog');
         $acl->allow('admin', 'blog', 'read');
         $acl->removeAllow(array('admin'), array('blog'), null);
+
+        $this->assertTrue(true);
     }
 
     public function testRoleObjectImplementsToString() {
@@ -1261,14 +1257,12 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
      * @group ZF-8468
      */
     public function testGetRegisteredRolesIsDeprecated() {
-        try {
-            $this->_acl->getRegisteredRoles();
-            $this->fail('getRegisteredRoles() did not throw an exception');
-        } catch(PHPUnit\Framework\Error\Error $e) {
-            return;
-        }
+        $this->expectException(\PHPUnit\Framework\Error\Error::class);
+        $this->expectExceptionMessage(
+            'The method getRegisteredRoles() was deprecated as of version 1.0, and may be removed. You\'re encouraged to use getRoles() instead.'
+        );
 
-        $this->fail('An expected notice has not been raised');
+        $this->_acl->getRegisteredRoles();
     }
 
     /**
