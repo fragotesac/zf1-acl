@@ -36,7 +36,7 @@ class Zend_Acl
     /**
      * Rule type: deny
      */
-    const TYPE_DENY  = 'TYPE_DENY';
+    const TYPE_DENY = 'TYPE_DENY';
 
     /**
      * Rule operation: add
@@ -65,7 +65,7 @@ class Zend_Acl
     /**
      * @var Zend_Acl_Role_Interface|null|string
      */
-    protected $_isAllowedRole     = null;
+    protected $_isAllowedRole = null;
 
     /**
      * @var Zend_Acl_Resource_Interface|null|string
@@ -370,8 +370,8 @@ class Zend_Acl
     public function inherits($resource, $inherit, $onlyParent = false)
     {
         try {
-            $resourceId     = $this->get($resource)->getResourceId();
-            $inheritId = $this->get($inherit)->getResourceId();
+            $resourceId = $this->get($resource)->getResourceId();
+            $inheritId  = $this->get($inherit)->getResourceId();
         } catch (Zend_Acl_Exception $e) {
             throw new Zend_Acl_Exception($e->getMessage(), $e->getCode(), $e);
         }
@@ -380,7 +380,7 @@ class Zend_Acl
             $parentId = $this->_resources[$resourceId]['parent']->getResourceId();
             if ($inheritId === $parentId) {
                 return true;
-            } else if ($onlyParent) {
+            } elseif ($onlyParent) {
                 return false;
             }
         } else {
@@ -566,9 +566,14 @@ class Zend_Acl
      * @uses   Zend_Acl::get()
      * @return Zend_Acl Provides a fluent interface
      */
-    public function setRule($operation, $type, $roles = null, $resources = null, $privileges = null,
-                            Zend_Acl_Assert_Interface $assert = null)
-    {
+    public function setRule(
+        $operation,
+        $type,
+        $roles = null,
+        $resources = null,
+        $privileges = null,
+        Zend_Acl_Assert_Interface $assert = null
+    ) {
         // ensure that the rule type is valid; normalize input to uppercase
         $type = strtoupper($type);
         if (self::TYPE_ALLOW !== $type && self::TYPE_DENY !== $type) {
@@ -579,11 +584,11 @@ class Zend_Acl
         // ensure that all specified Roles exist; normalize input to array of Role objects or null
         if (!is_array($roles)) {
             $roles = array($roles);
-        } else if (0 === count($roles)) {
+        } elseif (0 === count($roles)) {
             $roles = array(null);
         }
         $rolesTemp = $roles;
-        $roles = array();
+        $roles     = array();
         foreach ($rolesTemp as $role) {
             if (null !== $role) {
                 $roles[] = $this->_getRoleRegistry()->get($role);
@@ -599,11 +604,11 @@ class Zend_Acl
         if ($resources !== null) {
             if (!is_array($resources)) {
                 $resources = array($resources);
-            } else if (0 === count($resources)) {
+            } elseif (0 === count($resources)) {
                 $resources = array(null);
             }
             $resourcesTemp = $resources;
-            $resources = array();
+            $resources     = array();
             foreach ($resourcesTemp as $resource) {
                 if (null !== $resource) {
                     $resources[] = $this->get($resource);
@@ -622,7 +627,7 @@ class Zend_Acl
         // normalize privileges to array
         if (null === $privileges) {
             $privileges = array();
-        } else if (!is_array($privileges)) {
+        } elseif (!is_array($privileges)) {
             $privileges = array($privileges);
         }
 
@@ -634,7 +639,7 @@ class Zend_Acl
                     // this block will iterate the provided resources
                     foreach ($resources as $resource) {
                         foreach ($roles as $role) {
-                            $rules =& $this->_getRules($resource, $role, true);
+                            $rules = & $this->_getRules($resource, $role, true);
                             if (0 === count($privileges)) {
                                 $rules['allPrivileges']['type']   = $type;
                                 $rules['allPrivileges']['assert'] = $assert;
@@ -652,7 +657,7 @@ class Zend_Acl
                 } else {
                     // this block will apply to all resources in a global rule
                     foreach ($roles as $role) {
-                        $rules =& $this->_getRules(null, $role, true);
+                        $rules = & $this->_getRules(null, $role, true);
                         if (0 === count($privileges)) {
                             $rules['allPrivileges']['type']   = $type;
                             $rules['allPrivileges']['assert'] = $assert;
@@ -672,7 +677,7 @@ class Zend_Acl
                     // this block will iterate the provided resources
                     foreach ($resources as $resource) {
                         foreach ($roles as $role) {
-                            $rules =& $this->_getRules($resource, $role);
+                            $rules = & $this->_getRules($resource, $role);
                             if (null === $rules) {
                                 continue;
                             }
@@ -691,15 +696,13 @@ class Zend_Acl
                                 }
 
                                 if (isset($rules['allPrivileges']['type']) &&
-                                    $type === $rules['allPrivileges']['type'])
-                                {
+                                    $type === $rules['allPrivileges']['type']) {
                                     unset($rules['allPrivileges']);
                                 }
                             } else {
                                 foreach ($privileges as $privilege) {
                                     if (isset($rules['byPrivilegeId'][$privilege]) &&
-                                        $type === $rules['byPrivilegeId'][$privilege]['type'])
-                                    {
+                                        $type === $rules['byPrivilegeId'][$privilege]['type']) {
                                         unset($rules['byPrivilegeId'][$privilege]);
                                     }
                                 }
@@ -715,7 +718,7 @@ class Zend_Acl
                          * set resources (per privilege as well)
                          */
                         foreach (array_merge(array(null), $allResources) as $resource) {
-                            $rules =& $this->_getRules($resource, $role, true);
+                            $rules = & $this->_getRules($resource, $role, true);
                             if (null === $rules) {
                                 continue;
                             }
@@ -739,8 +742,7 @@ class Zend_Acl
                             } else {
                                 foreach ($privileges as $privilege) {
                                     if (isset($rules['byPrivilegeId'][$privilege]) &&
-                                        $type === $rules['byPrivilegeId'][$privilege]['type'])
-                                    {
+                                        $type === $rules['byPrivilegeId'][$privilege]['type']) {
                                         unset($rules['byPrivilegeId'][$privilege]);
                                     }
                                 }
@@ -789,14 +791,14 @@ class Zend_Acl
     public function isAllowed($role = null, $resource = null, $privilege = null)
     {
         // reset role & resource to null
-        $this->_isAllowedRole = null;
-        $this->_isAllowedResource = null;
+        $this->_isAllowedRole      = null;
+        $this->_isAllowedResource  = null;
         $this->_isAllowedPrivilege = null;
 
         if (null !== $role) {
             // keep track of originally called role
             $this->_isAllowedRole = $role;
-            $role = $this->_getRoleRegistry()->get($role);
+            $role                 = $this->_getRoleRegistry()->get($role);
             if (!$this->_isAllowedRole instanceof Zend_Acl_Role_Interface) {
                 $this->_isAllowedRole = $role;
             }
@@ -805,7 +807,7 @@ class Zend_Acl
         if (null !== $resource) {
             // keep track of originally called resource
             $this->_isAllowedResource = $resource;
-            $resource = $this->get($resource);
+            $resource                 = $this->get($resource);
             if (!$this->_isAllowedResource instanceof Zend_Acl_Resource_Interface) {
                 $this->_isAllowedResource = $resource;
             }
@@ -833,7 +835,6 @@ class Zend_Acl
 
                 // try next Resource
                 $resource = $this->_resources[$resource->getResourceId()]['parent'];
-
             } while (true); // loop terminates at 'allResources' pseudo-parent
         } else {
             $this->_isAllowedPrivilege = $privilege;
@@ -847,13 +848,12 @@ class Zend_Acl
                 // look for rule on 'allRoles' pseudo-parent
                 if (null !== ($ruleType = $this->_getRuleType($resource, null, $privilege))) {
                     return self::TYPE_ALLOW === $ruleType;
-                } else if (null !== ($ruleTypeAllPrivileges = $this->_getRuleType($resource, null, null))) {
+                } elseif (null !== ($ruleTypeAllPrivileges = $this->_getRuleType($resource, null, null))) {
                     return self::TYPE_ALLOW === $ruleTypeAllPrivileges;
                 }
 
                 // try next Resource
                 $resource = $this->_resources[$resource->getResourceId()]['parent'];
-
             } while (true); // loop terminates at 'allResources' pseudo-parent
         }
     }
@@ -921,9 +921,11 @@ class Zend_Acl
      * @return boolean|null
      * @throws Zend_Acl_Exception
      */
-    protected function _roleDFSVisitAllPrivileges(Zend_Acl_Role_Interface $role, Zend_Acl_Resource_Interface $resource = null,
-                                                 &$dfs = null)
-    {
+    protected function _roleDFSVisitAllPrivileges(
+        Zend_Acl_Role_Interface $role,
+        Zend_Acl_Resource_Interface $resource = null,
+        &$dfs = null
+    ) {
         if (null === $dfs) {
             throw new Zend_Acl_Exception('$dfs parameter may not be null');
         }
@@ -960,9 +962,11 @@ class Zend_Acl
      * @return boolean|null
      * @throws Zend_Acl_Exception
      */
-    protected function _roleDFSOnePrivilege(Zend_Acl_Role_Interface $role, Zend_Acl_Resource_Interface $resource = null,
-                                            $privilege = null)
-    {
+    protected function _roleDFSOnePrivilege(
+        Zend_Acl_Role_Interface $role,
+        Zend_Acl_Resource_Interface $resource = null,
+        $privilege = null
+    ) {
         if (null === $privilege) {
             throw new Zend_Acl_Exception('$privilege parameter may not be null');
         }
@@ -1002,9 +1006,12 @@ class Zend_Acl
      * @return boolean|null
      * @throws Zend_Acl_Exception
      */
-    protected function _roleDFSVisitOnePrivilege(Zend_Acl_Role_Interface $role, Zend_Acl_Resource_Interface $resource = null,
-                                                $privilege = null, &$dfs = null)
-    {
+    protected function _roleDFSVisitOnePrivilege(
+        Zend_Acl_Role_Interface $role,
+        Zend_Acl_Resource_Interface $resource = null,
+        $privilege = null,
+        &$dfs = null
+    ) {
         if (null === $privilege) {
             throw new Zend_Acl_Exception('$privilege parameter may not be null');
         }
@@ -1015,7 +1022,7 @@ class Zend_Acl
 
         if (null !== ($ruleTypeOnePrivilege = $this->_getRuleType($resource, $role, $privilege))) {
             return self::TYPE_ALLOW === $ruleTypeOnePrivilege;
-        } else if (null !== ($ruleTypeAllPrivileges = $this->_getRuleType($resource, $role, null))) {
+        } elseif (null !== ($ruleTypeAllPrivileges = $this->_getRuleType($resource, $role, null))) {
             return self::TYPE_ALLOW === $ruleTypeAllPrivileges;
         }
 
@@ -1048,9 +1055,11 @@ class Zend_Acl
      * @param  string                      $privilege
      * @return string|null
      */
-    protected function _getRuleType(Zend_Acl_Resource_Interface $resource = null, Zend_Acl_Role_Interface $role = null,
-                                    $privilege = null)
-    {
+    protected function _getRuleType(
+        Zend_Acl_Resource_Interface $resource = null,
+        Zend_Acl_Role_Interface $role = null,
+        $privilege = null
+    ) {
         // get the rules for the $resource and $role
         if (null === ($rules = $this->_getRules($resource, $role))) {
             return null;
@@ -1063,7 +1072,7 @@ class Zend_Acl
             } else {
                 return null;
             }
-        } else if (!isset($rules['byPrivilegeId'][$privilege])) {
+        } elseif (!isset($rules['byPrivilegeId'][$privilege])) {
             return null;
         } else {
             $rule = $rules['byPrivilegeId'][$privilege];
@@ -1073,7 +1082,7 @@ class Zend_Acl
 
         // check assertion first
         if ($rule['assert']) {
-            $assertion = $rule['assert'];
+            $assertion      = $rule['assert'];
             $assertionValue = $assertion->assert(
                 $this,
                 ($this->_isAllowedRole instanceof Zend_Acl_Role_Interface) ? $this->_isAllowedRole : $role,
@@ -1084,9 +1093,9 @@ class Zend_Acl
 
         if (null === $rule['assert'] || $assertionValue) {
             return $rule['type'];
-        } else if (null !== $resource || null !== $role || null !== $privilege) {
+        } elseif (null !== $resource || null !== $role || null !== $privilege) {
             return null;
-        } else if (self::TYPE_ALLOW === $rule['type']) {
+        } elseif (self::TYPE_ALLOW === $rule['type']) {
             return self::TYPE_DENY;
         } else {
             return self::TYPE_ALLOW;
@@ -1106,17 +1115,19 @@ class Zend_Acl
      * @param  boolean                     $create
      * @return array|null
      */
-    protected function &_getRules(Zend_Acl_Resource_Interface $resource = null, Zend_Acl_Role_Interface $role = null,
-                                  $create = false)
-    {
+    protected function &_getRules(
+        Zend_Acl_Resource_Interface $resource = null,
+        Zend_Acl_Role_Interface $role = null,
+        $create = false
+    ) {
         // create a reference to null
-        $null = null;
-        $nullRef =& $null;
+        $null    = null;
+        $nullRef = & $null;
 
         // follow $resource
         do {
             if (null === $resource) {
-                $visitor =& $this->_rules['allResources'];
+                $visitor = & $this->_rules['allResources'];
                 break;
             }
             $resourceId = $resource->getResourceId();
@@ -1126,7 +1137,7 @@ class Zend_Acl
                 }
                 $this->_rules['byResourceId'][$resourceId] = array();
             }
-            $visitor =& $this->_rules['byResourceId'][$resourceId];
+            $visitor = & $this->_rules['byResourceId'][$resourceId];
         } while (false);
 
 
@@ -1185,6 +1196,4 @@ class Zend_Acl
     {
         return array_keys($this->_resources);
     }
-
 }
-

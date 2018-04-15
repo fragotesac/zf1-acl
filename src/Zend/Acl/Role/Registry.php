@@ -79,7 +79,7 @@ class Zend_Acl_Role_Registry
                 } catch (Zend_Acl_Role_Registry_Exception $e) {
                     throw new Zend_Acl_Role_Registry_Exception("Parent Role id '$roleParentId' does not exist", 0, $e);
                 }
-                $roleParents[$roleParentId] = $roleParent;
+                $roleParents[$roleParentId]                       = $roleParent;
                 $this->_roles[$roleParentId]['children'][$roleId] = $role;
             }
         }
@@ -175,7 +175,7 @@ class Zend_Acl_Role_Registry
     public function inherits($role, $inherit, $onlyParents = false)
     {
         try {
-            $roleId     = $this->get($role)->getRoleId();
+            $roleId    = $this->get($role)->getRoleId();
             $inheritId = $this->get($inherit)->getRoleId();
         } catch (Zend_Acl_Role_Registry_Exception $e) {
             throw new Zend_Acl_Role_Registry_Exception($e->getMessage(), $e->getCode(), $e);
@@ -241,5 +241,4 @@ class Zend_Acl_Role_Registry
     {
         return $this->_roles;
     }
-
 }
