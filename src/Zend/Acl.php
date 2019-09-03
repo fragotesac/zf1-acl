@@ -265,7 +265,8 @@ class Zend_Acl
             throw new Zend_Acl_Exception("Resource id '$resourceId' already exists in the ACL");
         }
 
-        $resourceParent = null;
+        $resourceParent   = null;
+        $resourceParentId = '';
 
         if (null !== $parent) {
             try {
@@ -1088,7 +1089,7 @@ class Zend_Acl
                 ($this->_isAllowedRole instanceof Zend_Acl_Role_Interface) ? $this->_isAllowedRole : $role,
                 ($this->_isAllowedResource instanceof Zend_Acl_Resource_Interface) ? $this->_isAllowedResource : $resource,
                 $this->_isAllowedPrivilege
-                );
+            );
         }
 
         if (null === $rule['assert'] || $assertionValue) {

@@ -62,7 +62,8 @@ class Zend_Acl_Role_Registry
             throw new Zend_Acl_Role_Registry_Exception("Role id '$roleId' already exists in the registry");
         }
 
-        $roleParents = array();
+        $roleParents  = array();
+        $roleParentId = '';
 
         if (null !== $parents) {
             if (!is_array($parents)) {
