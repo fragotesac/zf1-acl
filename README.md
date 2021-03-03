@@ -1,6 +1,6 @@
-Zend Framework 1 - Acl
-============================
-[![Build Status](https://travis-ci.com/diablomedia/zf1-acl.svg?branch=master)](https://travis-ci.com/diablomedia/zf1-acl)
+# Zend Framework 1 - Acl
+
+[![Build](https://github.com/diablomedia/zf1-acl/workflows/Build/badge.svg?event=push)](https://github.com/diablomedia/zf1-acl/actions?query=workflow%3ABuild+event%3Apush)
 [![codecov](https://codecov.io/gh/diablomedia/zf1-acl/branch/master/graph/badge.svg)](https://codecov.io/gh/diablomedia/zf1-acl)
 [![Latest Stable Version](https://poser.pugx.org/diablomedia/zendframework1-acl/v/stable)](https://packagist.org/packages/diablomedia/zendframework1-acl)
 [![Total Downloads](https://poser.pugx.org/diablomedia/zendframework1-acl/downloads)](https://packagist.org/packages/diablomedia/zendframework1-acl)

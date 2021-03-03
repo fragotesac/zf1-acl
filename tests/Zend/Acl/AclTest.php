@@ -44,7 +44,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
      *
      * @return void
      */
-    public function setUp()
+    public function setUp(): void
     {
         $this->_acl = new Zend_Acl();
     }
@@ -125,7 +125,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
             $this->_acl->addRole(new Zend_Acl_Role('guest'), 'nonexistent');
             $this->fail('Expected Zend_Acl_Role_Registry_Exception not thrown upon specifying a non-existent parent');
         } catch (Zend_Acl_Role_Registry_Exception $e) {
-            $this->assertContains('does not exist', $e->getMessage());
+            $this->assertStringContainsString('does not exist', $e->getMessage());
         }
     }
 
@@ -142,13 +142,13 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
             $this->_acl->inheritsRole('nonexistent', $roleGuest);
             $this->fail('Expected Zend_Acl_Role_Registry_Exception not thrown upon specifying a non-existent child Role');
         } catch (Zend_Acl_Role_Registry_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
+            $this->assertStringContainsString('not found', $e->getMessage());
         }
         try {
             $this->_acl->inheritsRole($roleGuest, 'nonexistent');
             $this->fail('Expected Zend_Acl_Role_Registry_Exception not thrown upon specifying a non-existent parent Role');
         } catch (Zend_Acl_Role_Registry_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
+            $this->assertStringContainsString('not found', $e->getMessage());
         }
     }
 
@@ -228,7 +228,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
                         ->add($roleGuest);
             $this->fail('Expected exception not thrown upon adding same Role twice');
         } catch (Zend_Acl_Role_Registry_Exception $e) {
-            $this->assertContains('already exists', $e->getMessage());
+            $this->assertStringContainsString('already exists', $e->getMessage());
         }
     }
 
@@ -247,7 +247,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
                         ->add($roleGuest2);
             $this->fail('Expected exception not thrown upon adding two Roles with same ID');
         } catch (Zend_Acl_Role_Registry_Exception $e) {
-            $this->assertContains('already exists', $e->getMessage());
+            $this->assertStringContainsString('already exists', $e->getMessage());
         }
     }
 
@@ -316,7 +316,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
             $this->_acl->remove('nonexistent');
             $this->fail('Expected Zend_Acl_Exception not thrown upon removing a non-existent Resource');
         } catch (Zend_Acl_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
+            $this->assertStringContainsString('not found', $e->getMessage());
         }
     }
 
@@ -344,7 +344,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
             $this->_acl->add(new Zend_Acl_Resource('area'), 'nonexistent');
             $this->fail('Expected Zend_Acl_Exception not thrown upon specifying a non-existent parent');
         } catch (Zend_Acl_Exception $e) {
-            $this->assertContains('does not exist', $e->getMessage());
+            $this->assertStringContainsString('does not exist', $e->getMessage());
         }
     }
 
@@ -361,13 +361,13 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
             $this->_acl->inherits('nonexistent', $resourceArea);
             $this->fail('Expected Zend_Acl_Exception not thrown upon specifying a non-existent child Resource');
         } catch (Zend_Acl_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
+            $this->assertStringContainsString('not found', $e->getMessage());
         }
         try {
             $this->_acl->inherits($resourceArea, 'nonexistent');
             $this->fail('Expected Zend_Acl_Exception not thrown upon specifying a non-existent parent Resource');
         } catch (Zend_Acl_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
+            $this->assertStringContainsString('not found', $e->getMessage());
         }
     }
 
@@ -407,7 +407,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
                        ->add($resourceArea);
             $this->fail('Expected exception not thrown upon adding same Resource twice');
         } catch (Zend_Acl_Exception $e) {
-            $this->assertContains('already exists', $e->getMessage());
+            $this->assertStringContainsString('already exists', $e->getMessage());
         }
     }
 
@@ -425,7 +425,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
                        ->add($resourceArea2);
             $this->fail('Expected exception not thrown upon adding two Resources with same ID');
         } catch (Zend_Acl_Exception $e) {
-            $this->assertContains('already exists', $e->getMessage());
+            $this->assertStringContainsString('already exists', $e->getMessage());
         }
     }
 
@@ -440,13 +440,13 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
             $this->_acl->isAllowed('nonexistent');
             $this->fail('Expected Zend_Acl_Role_Registry_Exception not thrown upon non-existent Role');
         } catch (Zend_Acl_Role_Registry_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
+            $this->assertStringContainsString('not found', $e->getMessage());
         }
         try {
             $this->_acl->isAllowed(null, 'nonexistent');
             $this->fail('Expected Zend_Acl_Exception not thrown upon non-existent Resource');
         } catch (Zend_Acl_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
+            $this->assertStringContainsString('not found', $e->getMessage());
         }
     }
 
@@ -806,7 +806,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
             $this->_acl->isAllowed('guest');
             $this->fail('Expected Zend_Acl_Role_Registry_Exception not thrown upon isAllowed() on non-existent Role');
         } catch (Zend_Acl_Role_Registry_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
+            $this->assertStringContainsString('not found', $e->getMessage());
         }
         $this->_acl->addRole(new Zend_Acl_Role('guest'));
         $this->assertFalse($this->_acl->isAllowed('guest'));
@@ -827,7 +827,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
             $this->_acl->isAllowed('guest');
             $this->fail('Expected Zend_Acl_Role_Registry_Exception not thrown upon isAllowed() on non-existent Role');
         } catch (Zend_Acl_Role_Registry_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
+            $this->assertStringContainsString('not found', $e->getMessage());
         }
         $this->_acl->addRole(new Zend_Acl_Role('guest'));
         $this->assertFalse($this->_acl->isAllowed('guest'));
@@ -848,7 +848,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
             $this->_acl->isAllowed(null, 'area');
             $this->fail('Expected Zend_Acl_Exception not thrown upon isAllowed() on non-existent Resource');
         } catch (Zend_Acl_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
+            $this->assertStringContainsString('not found', $e->getMessage());
         }
         $this->_acl->add(new Zend_Acl_Resource('area'));
         $this->assertFalse($this->_acl->isAllowed(null, 'area'));
@@ -869,7 +869,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
             $this->_acl->isAllowed(null, 'area');
             $this->fail('Expected Zend_Acl_Exception not thrown upon isAllowed() on non-existent Resource');
         } catch (Zend_Acl_Exception $e) {
-            $this->assertContains('not found', $e->getMessage());
+            $this->assertStringContainsString('not found', $e->getMessage());
         }
         $this->_acl->add(new Zend_Acl_Resource('area'));
         $this->assertFalse($this->_acl->isAllowed(null, 'area'));
@@ -1181,7 +1181,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
         $acl->addRole('developer');
 
         $roles = $acl->getRegisteredRoles();
-        $this->assertInternalType('array', $roles);
+        $this->assertIsArray($roles);
         $this->assertNotEmpty($roles);
     }
 
