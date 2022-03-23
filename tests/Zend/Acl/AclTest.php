@@ -72,7 +72,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
     {
         $role = $this->_acl->addRole('area')
                           ->getRole('area');
-        $this->assertTrue($role instanceof Zend_Acl_Role);
+        $this->assertInstanceOf(Zend_Acl_Role::class, $role);
         $this->assertEquals('area', $role->getRoleId());
     }
 
@@ -273,7 +273,7 @@ class Zend_Acl_AclTest extends PHPUnit\Framework\TestCase
     {
         $resource = $this->_acl->addResource('area')
                           ->get('area');
-        $this->assertTrue($resource instanceof Zend_Acl_Resource);
+        $this->assertInstanceOf(Zend_Acl_Resource::class, $resource);
         $this->assertEquals('area', $resource->getResourceId());
     }
 
