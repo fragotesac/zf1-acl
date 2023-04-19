@@ -672,7 +672,7 @@ class Zend_Acl
                 }
                 break;
 
-            // remove from the rules
+                // remove from the rules
             case self::OP_REMOVE:
                 if ($resources !== null) {
                     // this block will iterate the provided resources
